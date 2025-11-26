@@ -1,4 +1,4 @@
-### Used Commands:
+### Introduction to Testing with JEST:
 
 ## 1. Install development dependences:
 
