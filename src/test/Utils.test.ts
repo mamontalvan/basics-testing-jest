@@ -38,11 +38,11 @@ describe('Utils test suit', () => {
             expect(actualLowerCase).toBe(expectLowerString);
         }); 
         
-        test('should return ', () => {
+        test('should return rigth upper string: "STRING-OF-TEST"', () => {
             //Arrange
             const expectUpperString = 'STRING-OF-TEST';
             //Act
-            const actualUpperCase = sut(stringTest).upperCase.toUpperCase();
+            const actualUpperCase = sut(stringTest).upperCase;
             //Assert
             expect(actualUpperCase).toBe(expectUpperString);
 
@@ -71,5 +71,18 @@ describe('Utils test suit', () => {
         });
     });
 
-
+    describe('testing with multiple use cases (parameters at test)', () => {
+        //Arrange
+        const sut = getStringInfo;
+        it.each([
+            {input: 'abc', expected:'ABC'},
+            {input: 'My-String', expected:'MY-STRING'},
+            {input: 'def', expected:'DEF'}
+        ])('"$input" toUpperCase should be "$expected"', ({input, expected})=>{
+            //Act
+            const actualUpperCase = sut(input).upperCase;
+            //Assert
+            expect(actualUpperCase).toBe(expected);
+        });
+    });
 })

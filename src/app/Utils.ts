@@ -12,7 +12,7 @@ export type StringInfo = {
 
 export function getStringInfo(arg: string): StringInfo {
     return {
-        lowerCase: arg.toLowerCase()+'hello',
+        lowerCase: arg.toLowerCase(),
         upperCase: arg.toUpperCase(),
         characters: Array.from(arg),
         length: arg.length,
