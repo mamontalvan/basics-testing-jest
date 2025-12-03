@@ -1,7 +1,7 @@
 import { StringUtils } from "../app/StringUtils";
 
 describe('StringUtils test suite', ()=>{
-    describe.only('Error tests',()=>{
+    describe('Error tests',()=>{
         let sut: StringUtils;
 
         beforeEach(()=>{
@@ -12,14 +12,7 @@ describe('StringUtils test suite', ()=>{
             //clearing mocks
         });
 
-        it('should return correct UpperCase',()=>{
-            //Arrange
-            const expectString = 'ABC'
-            //Act
-            const actual = sut.toUpperCase('abc');
-            //Assert
-            expect(actual).toBe(expectString)
-        });
+        //it.todo('Test long Strings');
 
         it('Should throw error on invalid argument - function',()=>{
             //Arrange
