@@ -1,5 +1,11 @@
 import { PasswordChecker } from "../../app/pass_checker/PasswordChecker";
 
+/*
+A password is invalid if:
+- length is less than 8 chars
+- has no upper case letter
+- has no lower case letter
+*/
 describe('PasswordChecker test suite',()=>{
     let sut: PasswordChecker;
 
