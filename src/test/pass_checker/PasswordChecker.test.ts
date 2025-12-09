@@ -1,7 +1,7 @@
 import { PasswordChecker, PasswordError } from "../../app/pass_checker/PasswordChecker";
 
 /*
-A password is invalid if:
+Requeriment 1: A password is invalid if:
 - length is less than 8 chars
 - has no upper case letter
 - has no lower case letter
@@ -53,5 +53,17 @@ describe('PasswordChecker test suite',()=>{
         const actual = sut.checkPassword('1234abcD');
         expect(actual.valid).toBe(true);
         expect(actual.reasons).toHaveLength(0);
-    }); 
+    });
+    
+    it('Admin Password with no number is invalid', ()=>{
+        const actual = sut.checkAdminPassword('abcdABCD');
+        expect(actual.reasons).toContain(PasswordError.NO_NUMBER)
+        expect(actual.valid).toBe(false);
+    });
+
+    it('Admin Password with number is valid', ()=>{
+        const actual = sut.checkAdminPassword('2bcdABCD');
+        expect(actual.reasons).not.toContain(PasswordError.NO_NUMBER)
+        expect(actual.valid).toBe(true);
+    });
 });
