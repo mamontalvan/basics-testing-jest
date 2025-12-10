@@ -2,15 +2,78 @@ import { calculateComplexity, toUpperCaseWithCb } from "../../app/doubles/OtherU
 
 //Test doubles in JEST: Stubs 
 describe('OtherUtils test suite', ()=>{
+
+    const sut = toUpperCaseWithCb;
+
+    describe('Tracking callbacks with JEST Mocks', ()=>{
+
+        const callBackMock = jest.fn();
+
+        afterEach(()=>{
+            jest.clearAllMocks();
+        });
+
+        it('calls callback for invalid argument - track calls', () =>{
+            const invalidArgumentResponse = 'Invalid Argument!';
+            const actual = sut('', callBackMock);
+            expect(actual).toBeUndefined();
+            expect(callBackMock).toHaveBeenCalledWith(invalidArgumentResponse);
+            expect(callBackMock).toHaveBeenCalledTimes(1);
+        });
+
+        it('calls callback for valid argument - track calls', () =>{
+            const argStringTest = 'abc';
+            const stringExpected = 'ABC';
+            const validArgumentResponse = `called function with ${argStringTest}`;
+            const actual = sut(argStringTest, callBackMock);
+            expect(actual).toBe(stringExpected);
+            expect(callBackMock).toHaveBeenCalledWith(validArgumentResponse);
+            expect(callBackMock).toHaveBeenCalledTimes(1)
+        });
+    });
+
+    describe('Tracking callbacks', ()=>{
+        let cbArgs = [];
+        let timesCalled = 0;
+
+        function callBackMock(arg: string) {
+            cbArgs.push(arg);
+            timesCalled++;
+        }
+
+        afterEach(() =>{
+            //Clearing tracking fields
+            cbArgs = [];
+            timesCalled = 0;
+        });
+
+        it('calls callback for invalid argument - track calls', () =>{
+            const invalidArgumentResponse = 'Invalid Argument!';
+            const actual = sut('', callBackMock);
+            expect(actual).toBeUndefined();
+            expect(cbArgs).toContain(invalidArgumentResponse);
+            expect(timesCalled).toBe(1)
+        });
+
+        it('calls callback for valid argument - track calls', () =>{
+            const argStringTest = 'abc';
+            const stringExpected = 'ABC';
+            const validArgumentResponse = `called function with ${argStringTest}`;
+            const actual = sut(argStringTest, callBackMock);
+            expect(actual).toBe(stringExpected);
+            expect(cbArgs).toContain(validArgumentResponse);
+            expect(timesCalled).toBe(1)
+        });
+
+    });
+
     it('ToUpperCase - calls callback for invalid argument', () =>{
-        const sut = toUpperCaseWithCb;
         const responseExpected = 'Invalid Argument!';
         const actual = sut('', ()=>{});
         expect(actual).toBeUndefined();
     });
 
     it('ToUpperCase - calls callback for valid argument', () =>{
-        const sut = toUpperCaseWithCb;
         const stringArg = 'test';
         const stringArgExpected = 'TEST';
         const actual = sut(stringArg, ()=>{});
