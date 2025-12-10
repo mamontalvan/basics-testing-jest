@@ -1,9 +1,42 @@
-import { calculateComplexity, toUpperCaseWithCb } from "../../app/doubles/OtherUtils";
+import { calculateComplexity, OtherStringUtils, toUpperCaseWithCb } from "../../app/doubles/OtherUtils";
 
 //Test doubles in JEST: Stubs 
 describe('OtherUtils test suite', ()=>{
 
     const sut = toUpperCaseWithCb;
+
+    describe('OtherStringUtils tests with spies', ()=>{
+        let sut: OtherStringUtils;
+
+        beforeEach(()=>{
+            sut = new OtherStringUtils();
+        });
+
+        test('use spy to tracks calls', () =>{
+            const toUpperCaseSpy = jest.spyOn(sut, "toUpperCase");
+            sut.toUpperCase('abc');
+            expect(toUpperCaseSpy).toHaveBeenCalledWith('abc');
+        });
+
+        test('use spy to tracks calls to other module', () =>{
+            const consoleLogSpy = jest.spyOn(console, "log");
+            sut.logString('cdf');
+            expect(consoleLogSpy).toHaveBeenCalledWith('cdf');
+        });
+
+        test('use spy to tracks calls to other module', () =>{
+            const consoleLogCallExternalService = jest.spyOn(console, "log");
+            (sut as any).callExternalService();
+            expect(consoleLogCallExternalService).toHaveBeenCalledWith('Calling external service!!!');
+        });
+
+        test('use spy to replace the implementation of a method', () =>{
+            jest.spyOn(sut as any, 'callExternalService').mockImplementation(()=>{
+                console.log('Calling mocked implementation!!');
+            });
+            (sut as any).callExternalService();
+        });
+    });
 
     describe('Tracking callbacks with JEST Mocks', ()=>{
 
