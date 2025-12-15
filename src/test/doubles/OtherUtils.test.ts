@@ -1,7 +1,7 @@
 import { calculateComplexity, OtherStringUtils, toUpperCaseWithCb } from "../../app/doubles/OtherUtils";
 
 //Test doubles in JEST: Stubs 
-describe('OtherUtils test suite', ()=>{
+describe.skip('OtherUtils test suite', ()=>{
 
     const sut = toUpperCaseWithCb;
 

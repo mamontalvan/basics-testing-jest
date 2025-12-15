@@ -14,9 +14,12 @@ const config: Config.InitialOptions = {
   collectCoverageFrom: [
     `${baseDir}/**/*.ts`
   ],
-  testMatch: [
-    `${baseTestDir}/**/*.ts`
-  ],
+  testMatch: 
+    [`${baseTestDir}/**/*.ts`],
+    "transform": {
+      "^.+\\.(t)s$": "ts-jest",
+      "^.+\\.(js|jsx)$": "babel-jest"
+    },
 }
 
 export default config;
