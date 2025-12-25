@@ -2,7 +2,7 @@ import { IncomingMessage, ServerResponse } from "http";
 import { RegisterHandler } from "../../../app/server_app/handlers/RegisterHandler"
 import { Authorizer } from "../../../app/server_app/auth/Authorizer";
 import { Account } from "../../../app/server_app/model/AuthModel";
-import { HTTP_CODES, HTTP_METHODS } from "../../../app/server_app/model/ServerModel";
+import { HTTP_CODES, HTTP_METHODS } from '../../../app/server_app/model/ServerModel';
 
 const getRequestBodyMock = jest.fn();
 
@@ -17,7 +17,13 @@ describe('RegisterHandler test suite', () => {
         id: "",
         password: 'somePassword',
         userName: 'someUserName'
-    }
+    };
+
+    const someInvalidAccount: Account = {
+        id: "",
+        password: "",
+        userName: "",
+    };
 
     const fakeId = '1234';
 
@@ -59,4 +65,27 @@ describe('RegisterHandler test suite', () => {
         expect(responseMock.write)
                 .toHaveBeenCalledWith(JSON.stringify({userId: fakeId}));
     });
-})
+
+    it('should not register invalid accounts in requests', async ()=> {
+        request.method = HTTP_METHODS.POST;
+        getRequestBodyMock.mockResolvedValueOnce(someInvalidAccount);
+        
+        await sut.handleRequest();
+        expect(responseMock.statusCode).toBe(HTTP_CODES.BAD_REQUEST);
+        expect(responseMock.writeHead).toHaveBeenCalledWith(
+            HTTP_CODES.BAD_REQUEST,
+            { 'Content-Type': 'application/json' }
+        );
+        expect(responseMock.write).toHaveBeenCalledWith(
+            JSON.stringify('userName and password required')
+        );
+    });
+
+    it('should do nothing for not supported http methods',async ()=>{
+        request.method = HTTP_METHODS.DELETE;
+        await sut.handleRequest();
+        expect(responseMock.write).not.toHaveBeenCalled();
+        expect(responseMock.writeHead).not.toHaveBeenCalled();
+        expect(getRequestBodyMock).not.toHaveBeenCalled();
+    });
+});
