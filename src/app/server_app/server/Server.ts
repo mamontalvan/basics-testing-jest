@@ -34,8 +34,7 @@ export class Server {
                     await new LoginHandler(request, response, this.authorizer).handleRequest();
                     break;
                 case 'reservation':
-                    const reservation = new ReservationsHandler(request, response, this.authorizer, this.reservationsDataAccess)
-                    await reservation.handleRequest();
+                    await new ReservationsHandler(request, response, this.authorizer, this.reservationsDataAccess).handleRequest();                    
                     break;
                 default:
                     break;
@@ -54,18 +53,10 @@ export class Server {
     }
 
     public async stopServer() {
-        if (this.server) {
-            console.log('closing server');
-            return new Promise<void>((resolve, reject) => {
-                this.server!.close((err) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        console.log('server closed');
-                        resolve();
-                    }
-                });
-            });
-        }
+         if (!this.server) return;
+
+        return new Promise<void>((resolve, reject) => {
+            this.server.close(err => err ? reject(err) : resolve());
+        });
     }
 }
