@@ -3,7 +3,6 @@ import { UserCredentialsDataAccess } from "../data/UserCredentialsDataAccess";
 import { ITokenValidator } from "./ITokenValidator";
 import { IUsersHandler } from "./IUsersHandler";
 
-
 export class Authorizer implements IUsersHandler, ITokenValidator {
 
     private sessionTokenDataAccess = new SessionTokenDataAccess();
