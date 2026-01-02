@@ -30,11 +30,13 @@ describe('RegisterHandler test suite', () => {
     const request = {
         method: undefined
     }
+
     const responseMock = {
         statusCode: 0,
         writeHead: jest.fn(),
         write: jest.fn()
     }
+    
     const authorizerMock = {
         registerUser: jest.fn()
     }

@@ -6,7 +6,6 @@ import { HTTP_CODES, HTTP_METHODS } from "../model/ServerModel";
 import { getRequestBody } from "../utils/Utils";
 
 
-
 export class ReservationsHandler {
 
     private request: IncomingMessage;
@@ -14,10 +13,13 @@ export class ReservationsHandler {
     private authorizer: Authorizer;
     private reservationsDataAccess: ReservationsDataAccess;
 
-    public constructor(request: IncomingMessage,
-        response: ServerResponse,
-        authorizer: Authorizer,
-        reservationsDataAccess: ReservationsDataAccess) {
+    public constructor(
+            request: IncomingMessage,
+            response: ServerResponse,
+            authorizer: Authorizer,
+            reservationsDataAccess: ReservationsDataAccess
+        ) 
+    {
         this.request = request;
         this.response = response;
         this.authorizer = authorizer;

@@ -36,11 +36,19 @@ describe('ReservationsDataAccess test suit', () =>{
 
     const someReservation = {
         id: '',
-        room: 'someRoom',
-        user: 'someUser',
+        room: 'someRoom1',
+        user: 'someUser1',
         startDate: '2026-01-01',
         endDate: '2026-01-05'    
-    }
+    };
+
+    const someReservation2 = {
+        id: '',
+        room: 'someRoom2',
+        user: 'someUser2',
+        startDate: '2027-01-01',
+        endDate: '2027-01-05'    
+    };
 
     beforeEach(()=>{
         sut = new ReservationsDataAccess();
@@ -58,15 +66,34 @@ describe('ReservationsDataAccess test suit', () =>{
     });
 
     it('should update and return undefined ', async() => {
-        expect(await sut.updateReservation(fakeId, 'room', 'someRoom')).toBeUndefined();
+        expect(await sut.updateReservation(fakeId, 'room', 'someRoom')).toBeUndefined();        
+        expect(updateMock).toHaveBeenCalledWith(fakeId,'room', 'someRoom');
     });
 
     it('should delete and return undefined ', async() => {
-        expect(await sut.deleteReservation(fakeId)).toBeUndefined();
+        const id = await sut.createReservation(someReservation);
+        
+        await sut.deleteReservation(id);
+        const actual = await sut.getReservation(id);
+
+        expect(actual).toBeUndefined(); 
+        expect(deleteMock).toHaveBeenCalledWith(id);       
     });
 
     it('should return reservation', async() => {
+        getByMock.mockResolvedValueOnce(someReservation);
+        
         const actual = await sut.getReservation(fakeId);
+
+        expect(actual).toStrictEqual(someReservation);
     })
     
+    it('should return array of reservations', async()=>{
+        getAllElementsMock.mockResolvedValueOnce([someReservation, someReservation2]);
+
+        const actual = await sut.getAllReservations();
+
+        expect(actual).toEqual([someReservation,someReservation2]);
+        expect(getAllElementsMock).toHaveBeenCalledTimes(1);
+    });
 })

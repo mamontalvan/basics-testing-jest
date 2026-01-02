@@ -6,7 +6,6 @@ import { getRequestBody } from "../utils/Utils";
 
 
 export class RegisterHandler {
-
     private authorizer: Authorizer;
     private request: IncomingMessage
     private response: ServerResponse;
