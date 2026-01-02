@@ -1,6 +1,6 @@
 ##  Testing with JEST
 
-JEST is a Javascript and Typescript testing framework developed by Facebook, it is a set global functions like describe, test, expect.
+JEST is a Javascript and Typescript testing framework developed by Facebook, it is a set global functions like describe, test, expect and it is also an assertion library that contains  a very powerful set of matchers.
 
 ### About the project
 
