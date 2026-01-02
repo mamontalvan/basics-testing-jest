@@ -22,6 +22,14 @@ describe('ReservationsHandler suit test', ()=>{
         user: 'someUser',
         startDate: '2025-01-01',
         endDate: '2025-02-01'
+    }; 
+    
+    const someReservation2: Reservation = {
+        id: '',
+        room: 'someRoom2',
+        user: 'someUser2',
+        startDate: '2024-01-01',
+        endDate: '2024-02-01'
     };    
 
     const requestMock = {
@@ -84,7 +92,7 @@ describe('ReservationsHandler suit test', ()=>{
             .toHaveBeenCalledWith(JSON.stringify('Unauthorized operation!'));        
     });
     
-    it('should validate request is not valid', async ()=> {
+    it('should validate request is not valid for POST method', async ()=> {
         requestMock.headers.authorization = fakeTokenId;
         requestMock.method = HTTP_METHODS.POST;
         authorizerMock.validateToken.mockResolvedValueOnce(true);        
@@ -98,7 +106,7 @@ describe('ReservationsHandler suit test', ()=>{
             .toHaveBeenCalledWith(JSON.stringify('Incomplete reservation!'));
     });
     
-    it('should validate request is valid', async()=>{
+    it('should validate request is valid for POST method', async () => {
         requestMock.headers.authorization = fakeTokenId;
         requestMock.method = HTTP_METHODS.POST;
         authorizerMock.validateToken.mockResolvedValueOnce(true);        
@@ -112,4 +120,81 @@ describe('ReservationsHandler suit test', ()=>{
         expect(responseMock.write)
             .toHaveBeenCalledWith(JSON.stringify({ reservationId: fakeReservationId } ));
     });
+
+    it('should get reservation', async ()=> {
+        requestMock.headers.authorization = fakeTokenId;
+        authorizerMock.validateToken.mockResolvedValueOnce(true);
+        requestMock.method = HTTP_METHODS.GET;
+        requestMock.url = `localhost:8080/reservation/${fakeReservationId}`
+        reservationsDataAccessMock.getReservation.mockResolvedValueOnce(someReservation);
+
+        const actual = await sut.handleRequest();
+
+        expect(actual).toBeUndefined();
+        expect(responseMock.write)
+                .toHaveBeenCalledWith(JSON.stringify(someReservation));
+        expect(responseMock.writeHead)
+                .toHaveBeenCalledWith(HTTP_CODES.OK, { 'Content-Type': 'application/json' });                
+    });    
+
+    it('should validate that not get reservation', async ()=> {
+        requestMock.headers.authorization = fakeTokenId;
+        authorizerMock.validateToken.mockResolvedValueOnce(true);
+        requestMock.method = HTTP_METHODS.GET;
+        requestMock.url = `localhost:8080/reservation/${fakeReservationId}`
+        reservationsDataAccessMock.getReservation.mockResolvedValueOnce(undefined);
+
+        const actual = await sut.handleRequest();
+
+        expect(actual).toBeUndefined();
+        expect(responseMock.statusCode).toBe(HTTP_CODES.NOT_fOUND);
+        expect(responseMock.write)
+            .toHaveBeenCalledWith(JSON.stringify(`Reservation with id ${fakeReservationId} not found`));
+    }); 
+
+    it('should validate that url do not have rigth id', async ()=> {
+        requestMock.headers.authorization = fakeTokenId;
+        authorizerMock.validateToken.mockResolvedValueOnce(true);
+        requestMock.method = HTTP_METHODS.GET;
+        requestMock.url = `localhost:8080/reservation/`
+
+        const actual = await sut.handleRequest();
+
+        expect(actual).toBeUndefined();
+        expect(responseMock.statusCode).toBe(HTTP_CODES.BAD_REQUEST);
+        expect(responseMock.write)
+            .toHaveBeenCalledWith(JSON.stringify('Please provide an ID!'));
+    });
+
+    it('should not get reservation', async ()=> {
+        requestMock.headers.authorization = fakeTokenId;
+        authorizerMock.validateToken.mockResolvedValueOnce(true);
+        requestMock.method = HTTP_METHODS.GET;
+        requestMock.url = `localhost:8080/reservation/`
+
+        const actual = await sut.handleRequest();
+
+        expect(actual).toBeUndefined();
+        expect(responseMock.statusCode).toBe(HTTP_CODES.BAD_REQUEST);
+        expect(responseMock.write)
+            .toHaveBeenCalledWith(JSON.stringify('Please provide an ID!'));
+    }); 
+    
+    it('should get all reservations', async ()=> {
+        requestMock.headers.authorization = fakeTokenId;
+        authorizerMock.validateToken.mockResolvedValueOnce(true);
+        requestMock.method = HTTP_METHODS.GET;
+        requestMock.url = `localhost:8080/reservation/all`;
+        reservationsDataAccessMock.getAllReservations
+            .mockResolvedValueOnce([someReservation, someReservation2]);
+
+        const actual = await sut.handleRequest();
+
+        expect(actual).toBeUndefined();
+        expect(responseMock.writeHead)
+            .toHaveBeenCalledWith(HTTP_CODES.OK, { 'Content-Type': 'application/json' });                
+        expect(responseMock.write)
+            .toHaveBeenCalledWith(JSON.stringify([someReservation, someReservation2]));
+    });    
+
 });
