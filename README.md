@@ -4,7 +4,7 @@
 
 It is a very simple reservation server application that handles the reservations for different meeting rooms. With this application, users can register with a username and password, with these credentials, users can log in and logged in users can create, update and delete reservations; all the users have the same level of access
 
-<img width="1057" height="669" alt="image" src="https://github.com/user-attachments/assets/2c87fd87-be9c-4689-9653-d1c75a94282c" />
+<img width="700" height="430" alt="image" src="https://github.com/user-attachments/assets/2c87fd87-be9c-4689-9653-d1c75a94282c" />
 
 
 
