@@ -5,7 +5,6 @@ import { Reservation } from "../model/ReservationModel";
 import { HTTP_CODES, HTTP_METHODS } from "../model/ServerModel";
 import { getRequestBody } from "../utils/Utils";
 
-
 export class ReservationsHandler {
 
     private request: IncomingMessage;
