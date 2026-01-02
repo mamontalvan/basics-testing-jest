@@ -1,12 +1,10 @@
-##  Testing with JEST:
+##  Testing with JEST
 
-
+JEST is a Javascript and Typescript testing framework developed by Facebook, it is a set global functions like describe, test, expect.
 
 ### About the project
 
-It is a very simple reservation server application that handles the reservations for different meeting rooms. With this application, users can register with a username and password, with these credentials, users can log in and logged in users can create, update and delete reservations; all the users have the same level of access.
-
-Internally it will serve 3 routes, we have 3 databases, wich are very simple implementation an in-memory database with simple array
+It is a very simple reservation server application that handles the reservations for different meeting rooms. With this application, users can register with a username and password, with these credentials, users can log in and logged in users can create, update and delete reservations; all the users have the same level of access. Internally it will serve 3 routes, we have 3 databases, wich are very simple implementation an in-memory database with simple array.
 
 
 <img width="700" height="430" alt="image" src="https://github.com/user-attachments/assets/2c87fd87-be9c-4689-9653-d1c75a94282c" />
